@@ -1,4 +1,4 @@
-# SwiftAssist 2.4.6 (RoR assist fix)
+# SwiftAssist 2.4.7 (RoR assist fix)
 
 Maintained fork of **Swift Assist** (Yakar / Wothor / Aktheon) for
 [Return of Reckoning](https://www.returnofreckoning.com/).
@@ -31,6 +31,8 @@ https://github.com/Talladego/LibSlash
 
 - Old macros of the form `/script SwiftAssist.Assist()` will not assist; use the
   hotbar macro text written by SetAssist.
+- With `/swift smart` enabled, any sender in an allowed chat channel can repoint
+  your SwiftSmartAssist macro (by design — filter with `/swift smart wb` / `p` / etc.).
 - Other addons that call Lua during hotbar clicks can still block `/assist`
   (older GCDsaver / CustomUI / StockPiler3 wrappers). Portrait Assist working
   while the macro fails is a strong signal of that.

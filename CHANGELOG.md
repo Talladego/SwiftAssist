@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.4.7 (2026-10-11)
+
+- Suppress "Assisting X" chat announce when restoring the saved assist macro on login/reload.
+- Guard `ParseEntry` against malformed chat lines (missing `[` / `]`).
+- Nil-guard `Addon.Settings` when updating `AssistTarget` from `Assist()`.
+
 ## 2.4.6 (2026-10-11)
 
 - SwiftAssist / SwiftSmartAssist macros use `/assist Name` (bare name).

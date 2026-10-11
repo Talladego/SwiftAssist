@@ -3,7 +3,8 @@
 
 -- mod was reworked and extended by Aktheon (smiling Aktheon)
 
-local SwiftVersion = L"v2.4.6 "
+local SwiftVersion = L"v2.4.7 "
+local skipNextAssistAnnounce = false
 
 local SwiftLineS = L"[SwiftAssist] : "
 local SwiftLineSC = L"<LINK data=\"0\" text=\"[SwiftAssist]\" color=\"255,255,125\"> : "
@@ -171,7 +172,9 @@ function Addon.Assist()
 
 	local name = ResolveAssistName(stored)
 	Addon.target = name
-	Addon.Settings.AssistTarget = name
+	if Addon.Settings then
+		Addon.Settings.AssistTarget = name
+	end
 
 	-- The client ignores /assist when it is sent from addon Lua (including
 	-- "/script SwiftAssist.Assist()"). SetAssist writes a hotbar macro of
@@ -230,27 +233,25 @@ end
 
 --[SwiftAssist] : Assist on my target <icon51> asd
 local function ParseEntry(msg, channelCode)
-	local trigB, _ = string.find( tostring(msg), tostring(SwiftLineS .. PatternAssistMe), 1, true )
-	if trigB ~= nil then
-		local senderNameB
-		if ChannelCodes["say"] == channelCode then
-			senderNameB, _ = string.find(tostring(msg), "[", 1, true)
-		else
-			senderNameB, _ = string.find(tostring(msg), "[", 2, true)
-		end
-		local senderNameEnd, _ = string.find(tostring(msg), "]", senderNameB, true)
-		local SenderName, _ = string.sub(tostring(msg), senderNameB+1, senderNameEnd-1)
-
-		return towstring(SenderName)
-		--[[atm useless
-		if Addon.Settings.SmartAssist == L"name" then
-			if Addon.Settings.SmartAssistName == towstring(SenderName) then
-				return towstring(SenderName)
-			end
-		else
-			return towstring(SenderName)
-		end]]
+	local text = tostring(msg)
+	local trigB = string.find(text, tostring(SwiftLineS .. PatternAssistMe), 1, true)
+	if trigB == nil then
+		return nil
 	end
+	local senderNameB
+	if ChannelCodes["say"] == channelCode then
+		senderNameB = string.find(text, "[", 1, true)
+	else
+		senderNameB = string.find(text, "[", 2, true)
+	end
+	if senderNameB == nil then
+		return nil
+	end
+	local senderNameEnd = string.find(text, "]", senderNameB, true)
+	if senderNameEnd == nil or senderNameEnd <= senderNameB + 1 then
+		return nil
+	end
+	return towstring(string.sub(text, senderNameB + 1, senderNameEnd - 1))
 end
 
 local function SetSmartLabel(wtxt, show)
@@ -589,6 +590,8 @@ function Addon.OnMacrosLoaded()
 		Addon.Settings.AssistTarget = Addon.target
 		Addon.career = Addon.Settings.AssistCareer or 0
 		if assistMacroId then
+			-- SetMacroData may raise MACRO_UPDATED; don't announce "Assisting X" on login.
+			skipNextAssistAnnounce = true
 			SetMacroData (L"SwiftAssist", L"/assist " .. Addon.target, 190, assistMacroId)
 		end
 		SetTexLabel()
@@ -612,7 +615,11 @@ function Addon.OnMacroUpdated(macroId)
 			WindowSetShowing("SwiftAssistCareerIconFX", false)
 		end
 		BroadcastSwiftAssistEvent(Events.MYASSIST)
-		AnnounceSetAssist()
+		if skipNextAssistAnnounce then
+			skipNextAssistAnnounce = false
+		else
+			AnnounceSetAssist()
+		end
 	end
 end
 
@@ -625,6 +632,7 @@ end
 end]]--
 
 function Addon.SetAssist()
+	skipNextAssistAnnounce = false
 	local actwnd = SystemData.MouseOverWindow.name
 	local needsUpdate
 	if actwnd == "EnemyIcon" or actwnd == "WarBoard_TogglerEnemy" then

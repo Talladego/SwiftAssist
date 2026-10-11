@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ModuleFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <UiMod name="Swift Assist" version="2.4.6" date="11/10/2026" >
+    <UiMod name="Swift Assist" version="2.4.7" date="11/10/2026" >
 
 	<Author name="Yakar, Wothor, Aktheon" email="" />
-	<Description text="Mark a player with SwiftSetAssist; SwiftAssist hotbar macro becomes /assist Name (bare name). SwiftAssistMe asks others to assist you; /swift smart updates SwiftSmartAssist from chat. 2.4.6: grammar strip + /assist macro text (not /script) so assist works with the client UI rules. Use /swift for help." />
+	<Description text="Mark a player with SwiftSetAssist; SwiftAssist hotbar macro becomes /assist Name (bare name). SwiftAssistMe asks others to assist you; /swift smart updates SwiftSmartAssist from chat. 2.4.7: no assist announce on reload; safer SmartAssist parse. Use /swift for help." />
 	<VersionSettings gameVersion="1.4.8" windowsVersion="1.0" savedVariablesVersion="1.0" />
 	<Dependencies>
 		<Dependency name="EASystem_Utils" />
