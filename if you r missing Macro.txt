@@ -1,0 +1,17 @@
+If macros are missing, create them in the macro window:
+
+SwiftSetAssist:
+  /script SwiftAssist.SetAssist()
+
+SwiftAssistMe:
+  /script SwiftAssist.AssistMe()
+
+SwiftAssist (inactive until you SetAssist; SetAssist rewrites this to /assist Name):
+  /script SwiftAssist.Inactive(L"assist")
+
+SwiftSmartAssist (inactive until smart assist picks someone):
+  /script SwiftAssist.Inactive(L"smart")
+
+After SetAssist, SwiftAssist must look like:
+  /assist PlayerName
+(not /script SwiftAssist.Assist())
