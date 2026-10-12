@@ -3,7 +3,7 @@
 
 -- mod was reworked and extended by Aktheon (smiling Aktheon)
 
-local SwiftVersion = L"v2.4.7 "
+local SwiftVersion = L"v2.4.8 "
 local skipNextAssistAnnounce = false
 
 local SwiftLineS = L"[SwiftAssist] : "
@@ -590,9 +590,18 @@ function Addon.OnMacrosLoaded()
 		Addon.Settings.AssistTarget = Addon.target
 		Addon.career = Addon.Settings.AssistCareer or 0
 		if assistMacroId then
-			-- SetMacroData may raise MACRO_UPDATED; don't announce "Assisting X" on login.
-			skipNextAssistAnnounce = true
-			SetMacroData (L"SwiftAssist", L"/assist " .. Addon.target, 190, assistMacroId)
+			local desired = L"/assist " .. Addon.target
+			local macros = DataUtils.GetMacros()
+			local current = macros and macros[assistMacroId]
+			-- Skip write when text already matches: avoids MACRO_UPDATED, and avoids leaving
+			-- skipNextAssistAnnounce set when the client raises no update for an unchanged macro.
+			-- (Initialize and MACROS_LOADED can both call this; the second pass is then a no-op.)
+			if not current or current.text ~= desired then
+				skipNextAssistAnnounce = true
+				SetMacroData (L"SwiftAssist", desired, 190, assistMacroId)
+			else
+				skipNextAssistAnnounce = false
+			end
 		end
 		SetTexLabel()
 	end

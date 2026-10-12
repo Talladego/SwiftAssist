@@ -1,4 +1,4 @@
-# SwiftAssist 2.4.7 (RoR assist fix)
+# SwiftAssist 2.4.8 (RoR assist fix)
 
 Maintained fork of **Swift Assist** (Yakar / Wothor / Aktheon) for
 [Return of Reckoning](https://www.returnofreckoning.com/).

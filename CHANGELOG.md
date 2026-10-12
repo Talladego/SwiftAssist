@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.4.8 (2026-10-12)
+
+- Restore the saved `/assist Name` macro only when its text differs from the current slot.
+  Avoids a lingering or double-consumed announce-suppress flag when `Initialize` and
+  `MACROS_LOADED` both run, or when `SetMacroData` raises no `MACRO_UPDATED`.
+
 ## 2.4.7 (2026-10-11)
 
 - Suppress "Assisting X" chat announce when restoring the saved assist macro on login/reload.
